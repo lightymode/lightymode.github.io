@@ -3,58 +3,166 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Mini Proxy Browser</title>
+  <title>calculator - Google Search</title>
+  <link rel="icon" href="https://www.google.com/favicon.ico" />
   <style>
-    body{font-family:system-ui,Segoe UI,sans-serif;background:#0d1117;color:#e6edf3;margin:0;padding:1.5rem}
-    h1{margin-top:0}
-    #controls{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
-    input,button{padding:.6rem .8rem;border-radius:6px;border:1px solid #30363d;background:#161b22;color:#e6edf3;font-size:14px}
-    button:hover{background:#21262d;cursor:pointer}
-    iframe{width:100%;height:75vh;border:1px solid #30363d;border-radius:8px;background:#0d1117}
-    small{color:#8b949e}
+    :root{
+      --bg:#f7f6f3; --card:#ffffff; --text:#0b1220; --muted:#5b6470; --accent:#1a73e8;
+      --btn:#eef1f4; --btn-border:#d6d9de;
+    }
+    [data-theme="dark"]{
+      --bg:#0f1720; --card:#0b1220; --text:#e6eef3; --muted:#9aa7b8; --accent:#2ea3ff;
+      --btn:#12151a; --btn-border:#23272b;
+    }
+    [data-theme="blue"]{
+      --bg:#eaf4ff; --card:#ffffff; --text:#04223a; --muted:#3d566b; --accent:#0066ff;
+      --btn:#f3f8ff; --btn-border:#d2e3ff;
+    }
+
+    html,body{height:100%;margin:0}
+    body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto, "Helvetica Neue",Arial;
+         background:var(--bg); color:var(--text); display:flex;flex-direction:column; gap:12px; padding:18px; box-sizing:border-box;}
+    header{display:flex;align-items:center;gap:12px;}
+    .brand{font-weight:600}
+    .controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    input[type="text"]{padding:10px 12px;border-radius:8px;border:1px solid var(--btn-border);background:var(--card);min-width:360px;color:var(--text)}
+    button{padding:9px 12px;border-radius:8px;border:1px solid var(--btn-border);background:var(--btn);color:var(--text);cursor:pointer}
+    button:hover{filter:brightness(.98);}
+    select{padding:8px;border-radius:8px;border:1px solid var(--btn-border);background:var(--card);color:var(--text)}
+
+    #frameWrap{flex:1;border-radius:10px;overflow:hidden;border:1px solid rgba(0,0,0,0.06);background:var(--card);position:relative;display:flex;flex-direction:column}
+    iframe{flex:1;border:0;width:100%}
+
+    /* Welcome overlay */
+    .welcome{display:flex;align-items:center;justify-content:center;flex:1;padding:32px}
+    .card{width:100%;max-width:980px;background:var(--card);box-shadow:0 6px 20px rgba(16,24,40,0.08);border-radius:12px;padding:26px;border:1px solid rgba(0,0,0,0.04);}
+    .card h2{margin:0 0 8px 0}
+    .card p{margin:0 0 16px 0;color:var(--muted)}
+
+    .row{display:flex;gap:8px;align-items:center}
+    .small{font-size:13px;color:var(--muted)}
+
+    footer{font-size:13px;color:var(--muted);padding-top:6px}
+    .theme-select{min-width:120px}
   </style>
 </head>
-<body>
-<h1>🌐 Mini Proxy Browser</h1>
-<p><small>Hosted on GitHub Pages. To embed sites that block iframes, deploy the proxy in step 3 and use “Load via Proxy”.</small></p>
+<body data-theme="light">
+  <header>
+    <img src="https://www.google.com/favicon.ico" alt="favicon" width="20" height="20" style="border-radius:4px">
+    <div class="brand">calculator - Google Search</div>
+    <div style="flex:1"></div>
+    <div class="controls">
+      <label class="small">Theme</label>
+      <select id="theme" class="theme-select" title="Choose theme">
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+        <option value="blue">Blue</option>
+      </select>
+    </div>
+  </header>
 
-<div id="controls">
-  <input id="url" placeholder="https://example.com or discord.com/app" style="min-width:350px">
-  <button id="load">Load in iframe</button>
-  <button id="open">Open in new tab</button>
-  <button id="proxy">Load via Proxy</button>
-</div>
+  <main id="frameWrap">
+    <div id="welcome" class="welcome">
+      <div class="card">
+        <h2>Welcome!</h2>
+        <p class="small">Type a URL to start. Example: <em>https://example.com</em> or <em>discord.com/app</em></p>
+        <div style="display:flex;gap:8px;align-items:center;margin-top:12px">
+          <input id="url" type="text" placeholder="https://example.com or discord.com/app">
+          <button id="load">Load</button>
+          <button id="proxyLoad">Load via Proxy</button>
+          <button id="openNew">Open in New Tab</button>
+          <button id="openData">Open in about:blank</button>
+        </div>
+        <p class="small" style="margin-top:12px">Tip: Use <strong>Load via Proxy</strong> to embed sites that block framing. Your proxy: <code class="small">https://lightymode.30asmirnoff.workers.dev</code></p>
+      </div>
+    </div>
 
-<iframe id="view" allow="autoplay"></iframe>
+    <iframe id="view" allow="autoplay"></iframe>
+  </main>
+
+  <footer>Made for you • <span id="status">idle</span></footer>
 
 <script>
-  // 🔧 Replace this after you deploy Cloudflare Worker (step 3)
-  const PROXY_BASE = "https://lightymode.30asmirnoff.workers.dev";
+const PROXY_BASE = "https://lightymode.30asmirnoff.workers.dev";
 
-  const urlEl=document.getElementById("url");
-  const view=document.getElementById("view");
+// Elements
+const themeSel = document.getElementById('theme');
+const bodyEl = document.body;
+const urlInput = document.getElementById('url');
+const loadBtn = document.getElementById('load');
+const proxyBtn = document.getElementById('proxyLoad');
+const openNewBtn = document.getElementById('openNew');
+const openDataBtn = document.getElementById('openData');
+const view = document.getElementById('view');
+const welcome = document.getElementById('welcome');
+const status = document.getElementById('status');
 
-  const norm=u=>u?(/^https?:\/\//i.test(u)?u:"https://"+u):"";
+// Theme handling with persistence
+function applyTheme(t){ bodyEl.setAttribute('data-theme', t); themeSel.value = t; localStorage.setItem('theme', t); }
+const saved = localStorage.getItem('theme') || 'light';
+applyTheme(saved);
 
-  document.getElementById("load").onclick=()=>{
-    const u=norm(urlEl.value.trim());
-    if(!u) return alert("Enter URL");
-    view.src=u;
-  };
+themeSel.addEventListener('change', ()=> applyTheme(themeSel.value));
 
-  document.getElementById("open").onclick=()=>{
-    const u=norm(urlEl.value.trim());
-    if(!u) return alert("Enter URL");
-    window.open(u,"_blank","noopener");
-  };
+// Helpers
+function norm(u){ if(!u) return ''; return /^https?:\/\//i.test(u)?u:'https://'+u; }
+function showFrameFor(url){ if(!url) return; welcome.style.display='none'; view.src = url; status.textContent = 'loaded: ' + url; }
+function showWelcome(){ welcome.style.display='flex'; view.src='about:blank'; status.textContent = 'idle'; }
 
-  document.getElementById("proxy").onclick=()=>{
-    if(PROXY_BASE==="PROXY_BASE")
-      return alert("Set your Cloudflare Worker URL first!");
-    const u=norm(urlEl.value.trim());
-    if(!u) return alert("Enter URL");
-    view.src=PROXY_BASE.replace(/\/$/,"")+"/proxy?url="+encodeURIComponent(u);
-  };
+// Button actions
+loadBtn.addEventListener('click', ()=> {
+  const u = norm(urlInput.value.trim());
+  if(!u) return alert('Enter URL');
+  // Load directly (may be blocked by framing on some sites)
+  showFrameFor(u);
+});
+
+proxyBtn.addEventListener('click', ()=> {
+  const u = norm(urlInput.value.trim());
+  if(!u) return alert('Enter URL');
+  const p = PROXY_BASE.replace(/\/$/,'') + '/proxy?url=' + encodeURIComponent(u);
+  showFrameFor(p);
+});
+
+openNewBtn.addEventListener('click', ()=> {
+  const u = norm(urlInput.value.trim()) || view.src;
+  if(!u || u==='about:blank') return alert('Nothing to open');
+  window.open(u, '_blank', 'noopener');
+});
+
+// Open as data:text/html in about:blank using proxy when needed
+openDataBtn.addEventListener('click', async ()=> {
+  let target = norm(urlInput.value.trim()) || view.src;
+  if(!target || target==='about:blank') return alert('Nothing to open');
+  status.textContent = 'fetching...';
+  try{
+    let fetchUrl = target;
+    let useProxy = false;
+    // If target is cross-origin (most cases) and PROXY_BASE is available, use proxy to fetch HTML
+    // We'll prefer proxy to avoid CORS errors.
+    if(PROXY_BASE && !target.startsWith(window.location.origin)){
+      fetchUrl = PROXY_BASE.replace(/\/$/,'') + '/proxy?url=' + encodeURIComponent(target);
+      useProxy = true;
+    }
+    const resp = await fetch(fetchUrl);
+    if(!resp.ok) throw new Error('Fetch failed: '+resp.status);
+    const text = await resp.text();
+    const dataUrl = 'data:text/html;charset=utf-8,' + encodeURIComponent(text);
+    // open in new tab
+    const w = window.open('about:blank');
+    if(!w) { alert('Popup blocked. Allow popups for this site.'); return; }
+    w.document.open();
+    w.document.write(text);
+    w.document.close();
+    status.textContent = 'opened as data:text/html' + (useProxy? ' (via proxy)':' (direct)');
+  }catch(e){
+    status.textContent = 'error';
+    alert('Could not fetch page HTML: ' + e.message + '\nTip: Use "Load via Proxy" and then "Open in about:blank"');
+  }
+});
+
+// Show welcome on load
+showWelcome();
 </script>
 </body>
 </html>
