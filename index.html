@@ -1,248 +1,125 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>calculator - Google Search</title>
-  <link rel="icon" href="https://www.google.com/favicon.ico" />
-  <style>
-    :root{--bg:#f7f6f3; --card:#ffffff; --text:#0b1220; --muted:#5b6470; --accent:#1a73e8; --btn:#eef1f4; --btn-border:#d6d9de;}
-    [data-theme="dark"]{--bg:#0f1720; --card:#0b1220; --text:#e6eef3; --muted:#9aa7b8; --accent:#2ea3ff; --btn:#12151a; --btn-border:#23272b;}
-    [data-theme="blue"]{--bg:#eaf4ff; --card:#ffffff; --text:#04223a; --muted:#3d566b; --accent:#0066ff; --btn:#f3f8ff; --btn-border:#d2e3ff;}
-    [data-theme="pastel"]{--bg:#fff7fb; --card:#ffffff; --text:#2b1b2d; --muted:#7a6b77; --accent:#ff77aa; --btn:#fff0f6; --btn-border:#ffdce6;}
-    [data-theme="cyber"]{--bg:#001219; --card:#001f27; --text:#a7f3d0; --muted:#4fd1c5; --accent:#00e5ff; --btn:#002b33; --btn-border:#00444f;}
-    [data-theme="sunset"]{--bg:linear-gradient(135deg,#ffd6a5,#ffd3e0); --card:rgba(255,255,255,0.95); --text:#2b1b2d; --muted:#6b5b6b; --accent:#ff6f61; --btn:#fff4f2; --btn-border:#ffd1c9;}
-    html,body{height:100%;margin:0}
-    body{font-family:Inter,system-ui,Segoe UI,Arial;padding:18px;background:var(--bg);color:var(--text);transition:background .25s ease;}
-    [data-theme="sunset"] body{background:var(--bg);}
-    .center{display:flex;align-items:center;justify-content:center;height:100vh}
-    .pw-card{background:var(--card);padding:22px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.08);min-width:320px;text-align:center;border:1px solid var(--btn-border)}
-    input[type="password"]{width:100%;padding:10px;border-radius:8px;border:1px solid var(--btn-border);background:transparent;color:var(--text)}
-    button{margin-top:12px;padding:10px 14px;border-radius:8px;border:1px solid var(--btn-border);background:var(--btn);cursor:pointer}
-    header{display:flex;align-items:center;gap:12px}
-    .logo{font-size:20px}
-    nav{display:flex;gap:8px;margin-top:12px}
-    .tabs button{padding:8px 12px;border-radius:8px;border:1px solid var(--btn-border);background:var(--card);cursor:pointer}
-    .controls{margin-left:auto;display:flex;gap:8px;align-items:center}
-    main#app{margin-top:12px}
-    .hidden{display:none}
-    .frame-wrap{border:1px solid rgba(0,0,0,0.06);border-radius:10px;overflow:hidden;background:var(--card);height:72vh;display:flex;flex-direction:column}
-    .iframe{flex:1;border:0;width:100%}
-    .topbar{display:flex;align-items:center;gap:8px;padding:8px;background:transparent}
-    .return-btn{padding:6px 10px;border-radius:8px;border:1px solid var(--btn-border);background:var(--btn);cursor:pointer}
-    .fullscreen-btn{padding:6px 10px;border-radius:8px;border:1px solid var(--btn-border);background:var(--btn);cursor:pointer}
-    .floating-mute{position:fixed;right:18px;top:18px;z-index:9999;padding:10px;border-radius:999px;border:1px solid var(--btn-border);background:var(--btn);cursor:pointer;box-shadow:0 4px 18px rgba(0,0,0,0.12)}
-    .loader{display:flex;align-items:center;justify-content:center;height:100%;font-size:18px;color:var(--muted)}
-    .apps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
-    .app-card{padding:12px;border-radius:8px;background:var(--card);border:1px solid var(--btn-border);text-align:center}
-    a.link{color:var(--accent);text-decoration:none}
-    body.fullscreen header, body.fullscreen nav, body.fullscreen .controls, body.fullscreen #home, body.fullscreen #apps, body.fullscreen #credits { display:none !important; }
-    body.fullscreen main#mainContent { margin:0; }
-    body.fullscreen .frame-wrap { height:100vh; border-radius:0; border:0; }
-    .overlay-return{position:fixed;left:12px;top:12px;z-index:99999;padding:8px 10px;border-radius:8px;border:1px solid var(--btn-border);background:var(--btn);cursor:pointer;display:none}
-    body.fullscreen .overlay-return{display:block}
-  </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>lightymode</title>
+<link rel="icon" href="https://www.google.com/favicon.ico"/>
+<style>
+:root{--bg:#f7f6f3;--card:#fff;--text:#0b1220;--muted:#5b6470;--accent:#1a73e8;--btn:#eef1f4;--btn-border:#d6d9de}
+[data-theme="dark"]{--bg:#0f1720;--card:#0b1220;--text:#e6eef3;--muted:#9aa7b8;--accent:#2ea3ff;--btn:#12151a;--btn-border:#23272b}
+[data-theme="blue"]{--bg:#eaf4ff;--card:#fff;--text:#04223a;--muted:#3d566b;--accent:#0066ff;--btn:#f3f8ff;--btn-border:#d2e3ff}
+[data-theme="pastel"]{--bg:#fff7fb;--card:#fff;--text:#2b1b2d;--muted:#7a6b77;--accent:#ff77aa;--btn:#fff0f6;--btn-border:#ffdce6}
+[data-theme="cyber"]{--bg:#001219;--card:#001f27;--text:#a7f3d0;--muted:#4fd1c5;--accent:#00e5ff;--btn:#002b33;--btn-border:#00444f}
+[data-theme="sunset"]{--bg:linear-gradient(135deg,#ffd6a5,#ffd3e0);--card:rgba(255,255,255,0.95);--text:#2b1b2d;--muted:#6b5b6b;--accent:#ff6f61;--btn:#fff4f2;--btn-border:#ffd1c9}
+body{margin:0;padding:18px;font-family:Inter,system-ui,Segoe UI,Arial;background:var(--bg);color:var(--text)}
+.center{display:flex;align-items:center;justify-content:center;height:100vh}
+.pw-card{background:var(--card);padding:22px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.08);min-width:320px;text-align:center;border:1px solid var(--btn-border)}
+input[type=password]{width:100%;padding:10px;border-radius:8px;border:1px solid var(--btn-border);background:transparent;color:var(--text);font-size:16px}
+button{margin-top:12px;padding:10px 14px;border-radius:8px;border:1px solid var(--btn-border);background:var(--btn);cursor:pointer;font-size:14px}
+header{display:flex;align-items:center;gap:12px}
+.logo{font-size:20px}
+nav{display:flex;gap:8px;margin-top:12px}
+.tabs button{padding:8px 12px;border-radius:8px;border:1px solid var(--btn-border);background:var(--card);cursor:pointer}
+.controls{margin-left:auto;display:flex;gap:8px;align-items:center}
+.hidden{display:none}
+.frame-wrap{border:1px solid rgba(0,0,0,.06);border-radius:10px;overflow:hidden;background:var(--card);height:72vh;display:flex;flex-direction:column}
+.iframe{flex:1;border:0;width:100%}
+.topbar{display:flex;align-items:center;gap:8px;padding:8px;background:transparent}
+.return-btn,.fullscreen-btn{padding:6px 10px;border-radius:8px;border:1px solid var(--btn-border);background:var(--btn);cursor:pointer}
+.apps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.app-card{padding:10px;border-radius:10px;background:var(--card);border:1px solid var(--btn-border);display:flex;align-items:center;gap:10px}
+.app-card img{width:24px;height:24px;border-radius:5px}
+.app-card button{flex:1;padding:6px 8px;border:0;background:none;color:var(--text);font-weight:600;text-align:left;cursor:pointer}
+body.fullscreen header,body.fullscreen nav{display:none!important}
+body.fullscreen .frame-wrap{height:100vh;border:0;border-radius:0}
+.overlay-return{position:fixed;left:12px;top:12px;z-index:99999;padding:8px 10px;border-radius:8px;border:1px solid var(--btn-border);background:var(--btn);cursor:pointer;display:none}
+body.fullscreen .overlay-return{display:block}
+</style>
 </head>
 <body data-theme="light">
-  <!-- Password screen -->
-  <div id="pwScreen" class="center">
-    <div class="pw-card">
-      <div style="font-size:18px;margin-bottom:10px">what's the password</div>
-      <input id="pwInput" type="password" placeholder="">
-      <div><button id="pwBtn">Enter</button></div>
-      <div id="pwMsg" style="color:#b33;margin-top:8px;display:none"></div>
-    </div>
-  </div>
+<div id="pwScreen" class="center">
+ <div class="pw-card">
+  <div style="font-size:18px;margin-bottom:10px">what's the password</div>
+  <input id="pwInput" type="password"/>
+  <div><button id="pwBtn">Enter</button></div>
+  <div id="pwMsg" style="color:#b33;margin-top:8px;display:none"></div>
+ </div>
+</div>
 
-  <!-- Main app -->
-  <div id="app" class="hidden">
-    <header>
-      <div class="logo">⚡</div>
-      <div style="font-weight:600">lightymode</div>
-      <div class="controls">
-        <label for="themeSel" class="small">Theme</label>
-        <select id="themeSel">
-          <option value="light">Light</option>
-          <option value="dark">Dark</option>
-          <option value="blue">Blue</option>
-          <option value="pastel">Pastel Pink</option>
-          <option value="cyber">Cyber Teal</option>
-          <option value="sunset">Sunset</option>
-        </select>
-      </div>
-    </header>
+<div id="app" class="hidden">
+<header><div class="logo">⚡</div><div style="font-weight:600">lightymode</div>
+<div class="controls"><label for="themeSel">Theme</label>
+<select id="themeSel">
+<option value="light">Light</option><option value="dark">Dark</option><option value="blue">Blue</option>
+<option value="pastel">Pastel</option><option value="cyber">Cyber</option><option value="sunset">Sunset</option>
+</select></div></header>
+<nav class="tabs"><button data-tab="home">Home</button><button data-tab="proxy">Proxy</button>
+<button data-tab="games">Games</button><button data-tab="apps">Apps</button><button data-tab="credits">Credits</button></nav>
 
-    <nav class="tabs" style="margin-top:12px">
-      <button data-tab="home">Home</button>
-      <button data-tab="proxy">Proxy</button>
-      <button data-tab="games">Games</button>
-      <button data-tab="apps">Apps</button>
-      <button data-tab="credits">Credits</button>
-    </nav>
+<main id="mainContent">
+<section id="home"><h2>Welcome</h2><p>Choose a tab to begin.</p></section>
+<section id="proxy" class="hidden">
+<div class="topbar">
+ <button id="proxyReturn" class="return-btn">Return</button>
+ <button id="fullscreenToggle" class="fullscreen-btn">Fullscreen</button>
+ <div style="flex:1"></div>
+ <div style="display:flex;gap:8px;align-items:center">
+  <input id="url" type="text" placeholder="https://example.com" style="padding:8px;border-radius:8px;border:1px solid var(--btn-border);min-width:240px">
+  <button id="loadBtn">Load</button><button id="proxyBtn">Via Proxy</button><button id="openData">about:blank</button>
+ </div>
+</div>
+<div class="frame-wrap"><iframe id="view" class="iframe"></iframe></div>
+<button class="overlay-return" id="overlayReturn">Return</button>
+</section>
 
-    <main id="mainContent">
-      <!-- Home -->
-      <section id="home" class="tab view">
-        <h2>Welcome</h2>
-        <p class="small">Choose a tab to begin.</p>
-      </section>
+<section id="games" class="hidden"><div class="topbar"><button id="gamesReturn" class="return-btn">Return</button></div>
+<div class="frame-wrap"><div id="gamesLoader" style="display:flex;align-items:center;justify-content:center;color:gray">Loading games...</div>
+<iframe id="gamesFrame" class="iframe"></iframe></div></section>
 
-      <!-- Proxy tab -->
-      <section id="proxy" class="tab view hidden">
-        <div class="topbar">
-          <button id="proxyReturn" class="return-btn">Return</button>
-          <button id="fullscreenToggle" class="fullscreen-btn">Fullscreen</button>
-          <div style="flex:1"></div>
-          <div style="display:flex;gap:8px;align-items:center">
-            <input id="url" type="text" placeholder="https://example.com or discord.com/app" style="min-width:320px;padding:8px;border-radius:8px;border:1px solid var(--btn-border)">
-            <button id="loadBtn">Load</button>
-            <button id="proxyBtn">Load via Proxy</button>
-            <button id="openData">Open in about:blank</button>
-          </div>
-        </div>
-        <div class="frame-wrap" style="margin-top:8px">
-          <iframe id="view" class="iframe"></iframe>
-        </div>
-        <button class="overlay-return" id="overlayReturn">Return</button>
-      </section>
+<section id="apps" class="hidden">
+<h3>Apps</h3>
+<div class="apps-grid">
+ <div class="app-card"><img src="https://www.google.com/s2/favicons?sz=64&domain=discord.com"><button onclick="openApp('https://discord.com/app')">Discord</button></div>
+ <div class="app-card"><img src="https://www.google.com/s2/favicons?sz=64&domain=youtube.com"><button onclick="openApp('https://www.youtube.com')">YouTube</button></div>
+ <div class="app-card"><img src="https://www.google.com/s2/favicons?sz=64&domain=reddit.com"><button onclick="openApp('https://www.reddit.com')">Reddit</button></div>
+ <div class="app-card"><img src="https://www.google.com/s2/favicons?sz=64&domain=google.com"><button onclick="openApp('https://www.google.com')">Google</button></div>
+ <div class="app-card"><img src="https://www.google.com/s2/favicons?sz=64&domain=nvidia.com"><button onclick="openApp('https://www.nvidia.com/geforce-now')">GeForce Now</button></div>
+ <div class="app-card"><img src="https://www.google.com/s2/favicons?sz=64&domain=tiktok.com"><button onclick="openApp('https://www.tiktok.com')">TikTok</button></div>
+</div>
+</section>
 
-      <!-- Games tab (full page view inside iframe) -->
-      <section id="games" class="tab view hidden">
-        <div class="topbar">
-          <button id="gamesReturn" class="return-btn">Return</button>
-          <div style="flex:1"></div>
-        </div>
-        <div class="frame-wrap">
-          <div id="gamesLoader" class="loader">Loading games...</div>
-          <iframe id="gamesFrame" class="iframe"></iframe>
-        </div>
-      </section>
-
-      <!-- Apps tab -->
-      <section id="apps" class="tab view hidden">
-        <h3>Apps</h3>
-        <div class="apps-grid">
-          <div class="app-card"><button onclick="openApp('https://discord.com/app')">Discord</button></div>
-          <div class="app-card"><button onclick="openApp('https://www.youtube.com')">YouTube</button></div>
-          <div class="app-card"><button onclick="openApp('https://www.reddit.com')">Reddit</button></div>
-          <div class="app-card"><button onclick="openApp('https://www.google.com')">Google</button></div>
-          <div class="app-card"><button onclick="openApp('https://www.nvidia.com/geforce-now')">GeForce Now</button></div>
-          <div class="app-card"><button onclick="openApp('https://www.tiktok.com')">TikTok</button></div>
-        </div>
-        <p class="small" style="margin-top:12px">Bookmarks are stored in the site code; to change them update the backend files.</p>
-      </section>
-
-      <!-- Credits tab -->
-      <section id="credits" class="tab view hidden">
-        <h3>Credits</h3>
-        <p>made by chatgpt lmao</p>
-        <p><a class="link" href="https://github.com/lightymode/lightymode.github.io" target="_blank">https://github.com/lightymode/lightymode.github.io</a></p>
-      </section>
-    </main>
-  </div>
+<section id="credits" class="hidden"><h3>Credits</h3><p>made by chatgpt lmao</p>
+<p><a href="https://github.com/lightymode/lightymode.github.io" target="_blank">GitHub Repo</a></p></section>
+</main></div>
 
 <script>
-const PROXY_BASE = "https://lightymode.30asmirnoff.workers.dev";
+const PROXY_BASE="https://lightymode.30asmirnoff.workers.dev";
+const pwScreen=document.getElementById('pwScreen'),app=document.getElementById('app'),pwInput=document.getElementById('pwInput'),pwBtn=document.getElementById('pwBtn'),pwMsg=document.getElementById('pwMsg');
+function unlock(){pwScreen.style.display='none';app.classList.remove('hidden');sessionStorage.setItem('unlocked','1');}
+function lock(){pwScreen.style.display='flex';app.classList.add('hidden');sessionStorage.removeItem('unlocked');}
+if(sessionStorage.getItem('unlocked')==='1'){unlock();}
+pwBtn.addEventListener('click',()=>{if(pwInput.value==='toileT'){unlock();}else{pwMsg.style.display='block';pwMsg.textContent='incorrect password';setTimeout(()=>pwMsg.style.display='none',2000);pwInput.value='';}});
+pwInput.addEventListener('keydown',e=>{if(e.key==='Enter')pwBtn.click();});
 
-// Password logic (sessionStorage remembers for session)
-const pwScreen = document.getElementById('pwScreen');
-const app = document.getElementById('app');
-const pwInput = document.getElementById('pwInput');
-const pwBtn = document.getElementById('pwBtn');
-const pwMsg = document.getElementById('pwMsg');
+const themeSel=document.getElementById('themeSel');const savedTheme=localStorage.getItem('theme')||'light';document.body.setAttribute('data-theme',savedTheme);themeSel.value=savedTheme;
+themeSel.addEventListener('change',()=>{document.body.setAttribute('data-theme',themeSel.value);localStorage.setItem('theme',themeSel.value);});
 
-function unlock(){ pwScreen.classList.add('hidden'); app.classList.remove('hidden'); sessionStorage.setItem('unlocked','1'); }
-function lock(){ pwScreen.classList.remove('hidden'); app.classList.add('hidden'); sessionStorage.removeItem('unlocked'); }
+const tabs=document.querySelectorAll('.tabs button');const views=['home','proxy','games','apps','credits'];
+tabs.forEach(btn=>btn.addEventListener('click',()=>showTab(btn.getAttribute('data-tab'))));
+function showTab(n){views.forEach(v=>document.getElementById(v).classList.add('hidden'));document.getElementById(n).classList.remove('hidden');if(n==='games')loadGames();}
+function normalize(u){if(!u)return'';return/^https?:\\/\\//i.test(u)?u:'https://'+u;}
+const urlEl=document.getElementById('url'),view=document.getElementById('view');
+document.getElementById('loadBtn').onclick=()=>{const u=normalize(urlEl.value.trim());if(u)view.src=u;};
+document.getElementById('proxyBtn').onclick=()=>{const u=normalize(urlEl.value.trim());if(u)view.src=PROXY_BASE+'/proxy?url='+encodeURIComponent(u);};
+document.getElementById('openData').onclick=async()=>{let t=normalize(urlEl.value.trim())||view.src;if(!t)return alert('Nothing to open');const resp=await fetch(t);const txt=await resp.text();const w=window.open('about:blank');w.document.write(txt);w.document.close();};
+document.getElementById('proxyReturn').onclick=()=>showTab('home');
+document.getElementById('overlayReturn').onclick=()=>{document.body.classList.remove('fullscreen');showTab('home');};
+document.getElementById('gamesReturn').onclick=()=>showTab('home');
 
-if(sessionStorage.getItem('unlocked')==='1'){ unlock(); } else { lock(); }
-
-pwBtn.addEventListener('click', ()=>{ const v = pwInput.value; if(v === 'toileT'){ unlock(); } else { pwMsg.style.display='block'; pwMsg.textContent='incorrect password'; pwInput.value=''; setTimeout(()=> pwMsg.style.display='none',2000); } });
-pwInput.addEventListener('keydown', (e)=>{ if(e.key==='Enter') pwBtn.click(); });
-
-// Theme selector
-const themeSel = document.getElementById('themeSel');
-const savedTheme = localStorage.getItem('theme') || 'light';
-document.body.setAttribute('data-theme', savedTheme);
-themeSel.value = savedTheme;
-themeSel.addEventListener('change', ()=>{ document.body.setAttribute('data-theme', themeSel.value); localStorage.setItem('theme', themeSel.value); });
-
-// Tabs
-const tabs = document.querySelectorAll('.tabs button');
-const views = document.querySelectorAll('.view');
-let currentTab = 'home';
-tabs.forEach(btn=> btn.addEventListener('click', ()=>{ const t = btn.getAttribute('data-tab'); showTab(t); }));
-function showTab(name){ currentTab = name; views.forEach(v=> v.classList.add('hidden')); const el = document.getElementById(name); if(el) el.classList.remove('hidden'); if(name==='games'){ loadGames(); } }
-
-// Proxy functions
-const urlEl = document.getElementById('url');
-const view = document.getElementById('view');
-document.getElementById('loadBtn').addEventListener('click', ()=>{ const u = normalize(urlEl.value.trim()); if(!u){ alert('Enter URL'); return; } view.src = u; });
-document.getElementById('proxyBtn').addEventListener('click', ()=>{ const u = normalize(urlEl.value.trim()); if(!u){ alert('Enter URL'); return; } view.src = PROXY_BASE.replace(/\/$/,'') + '/proxy?url=' + encodeURIComponent(u); });
-document.getElementById('openData').addEventListener('click', async ()=>{ let target = normalize(urlEl.value.trim()) || view.src; if(!target || target==='about:blank') return alert('Nothing to open'); try{ let fetchUrl = target; if(PROXY_BASE && !target.startsWith(window.location.origin)){ fetchUrl = PROXY_BASE.replace(/\/$/,'') + '/proxy?url=' + encodeURIComponent(target); } const resp = await fetch(fetchUrl); if(!resp.ok) throw new Error('Fetch failed: '+resp.status); const text = await resp.text(); const w = window.open('about:blank'); if(!w){ alert('Popup blocked. Allow popups for this site.'); return; } w.document.open(); w.document.write(text); w.document.close(); }catch(e){ alert('Could not fetch page HTML: ' + e.message); } });
-
-function normalize(u){ if(!u) return ''; return /^https?:\/\//i.test(u)?u:'https://'+u; }
-
-// Return buttons to go home
-document.getElementById('proxyReturn').addEventListener('click', ()=> showTab('home'));
-document.getElementById('gamesReturn').addEventListener('click', ()=> showTab('home'));
-document.getElementById('overlayReturn').addEventListener('click', ()=>{ document.body.classList.remove('fullscreen'); document.getElementById('fullscreenToggle').textContent = 'Fullscreen'; showTab('home'); })
-
-// Apps quick-launch - now load inside proxy iframe via proxy
-function openApp(url){ showTab('proxy'); const p = PROXY_BASE.replace(/\/$/,'') + '/proxy?url=' + encodeURIComponent(url); view.src = p; }
-
-# Games loading: load singlefile.html into gamesFrame after 1-2s loader (full page inside iframe)
-let gamesLoaded=false;
-async function loadGames(){
-  const iframe = document.getElementById('gamesFrame');
-  const loader = document.getElementById('gamesLoader');
-  if(gamesLoaded){ iframe.style.display='block'; loader.style.display='none'; return; }
-  loader.style.display='flex';
-  iframe.style.display='none';
-  try{
-    await new Promise(r=> setTimeout(r,1200));
-    const resp = await fetch('singlefile.html');
-    if(!resp.ok) throw new Error('Failed to load games');
-    const html = await resp.text();
-    iframe.src = 'about:blank';
-    iframe.onload = ()=> { gamesLoaded=true; loader.style.display='none'; iframe.style.display='block'; };
-    const doc = iframe.contentWindow.document;
-    doc.open();
-    doc.write(html);
-    # inject floating mute + return button into iframe
-    doc.write(`<style>
-        #lmReturnBtn{position:fixed;left:12px;top:12px;z-index:99999;padding:8px 10px;border-radius:8px;border:1px solid #ccc;background:#fff;cursor:pointer}
-        #lmMuteBtn{position:fixed;right:12px;top:12px;z-index:99999;padding:8px;border-radius:999px;border:1px solid #ccc;background:#fff;cursor:pointer}
-      </style>
-      <button id="lmReturnBtn">Return</button><button id="lmMuteBtn">Mute</button>
-      <script>
-        (function(){
-          const ret = document.getElementById('lmReturnBtn');
-          const mute = document.getElementById('lmMuteBtn');
-          ret.addEventListener('click', function(){ parent.postMessage({type:'games-return'},'*'); });
-          let muted = false;
-          function setMute(m){ muted = m; mute.textContent = muted? 'Unmute':'Mute'; const audios = document.querySelectorAll('audio,video'); audios.forEach(a=> a.muted = muted); }
-          mute.addEventListener('click', ()=> { setMute(!muted); });
-          setMute(false);
-        })();
-      <\/script>`);
-    doc.close();
-  }catch(e){
-    loader.textContent = 'Error loading games: '+e.message;
-  }
-}
-
-// Listen for message from iframe to return
-window.addEventListener('message', (ev)=>{ if(ev.data && ev.data.type === 'games-return'){ showTab('home'); } });
-
-// Fullscreen toggle behavior
-const fsToggle = document.getElementById('fullscreenToggle');
-fsToggle.addEventListener('click', ()=>{
-  const isFs = document.body.classList.toggle('fullscreen');
-  fsToggle.textContent = isFs ? 'Minimize' : 'Fullscreen';
-});
-
-// initial show home
+function openApp(u){showTab('proxy');view.src=PROXY_BASE+'/proxy?url='+encodeURIComponent(u);}
+let gamesLoaded=false;async function loadGames(){const f=document.getElementById('gamesFrame'),l=document.getElementById('gamesLoader');if(gamesLoaded){l.style.display='none';return;}l.style.display='flex';await new Promise(r=>setTimeout(r,1000));const resp=await fetch('singlefile.html');const h=await resp.text();const doc=f.contentWindow.document;doc.open();doc.write(h);doc.close();gamesLoaded=true;l.style.display='none';}
+document.getElementById('fullscreenToggle').onclick=()=>{const fs=document.body.classList.toggle('fullscreen');document.getElementById('fullscreenToggle').textContent=fs?'Minimize':'Fullscreen';};
 showTab('home');
 </script>
-</body>
-</html>
+</body></html>
